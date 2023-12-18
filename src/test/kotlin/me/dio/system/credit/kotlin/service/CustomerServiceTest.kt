@@ -38,7 +38,7 @@ class CustomerServiceTest {
         //then
         Assertions.assertThat(actual).isNotNull
         Assertions.assertThat(actual).isSameAs(fakeCustomer)
-        verify(exactly = 1){ customerRepository.save(fakeCustomer) }
+        verify(exactly = 1) { customerRepository.save(fakeCustomer) }
     }
 
     @Test
@@ -84,28 +84,31 @@ class CustomerServiceTest {
     }
 
 
+    companion object {
+        fun buildCustomer(
+            firstName: String = "Hugo",
+            lastName: String = "Souza",
+            cpf: String = "05056881155",
+            email: String = "hugo@gmail.com",
+            password: String = "123456",
+            cep: String = "79013330",
+            street: String = "Rua Mundo da Lua",
+            income: BigDecimal = BigDecimal.valueOf(1000.0),
+            id: Long = 1L
+        ): Customer = Customer(
+            firstName = firstName,
+            lastName = lastName,
+            cpf = cpf,
+            email = email,
+            password = password,
+            address = Address(
+                cep = cep,
+                street = street
+            ),
+            income = income,
+            id = id
+        )
 
-    private fun buildCustomer(
-        firstName: String = "Hugo",
-        lastName: String = "Souza",
-        cpf: String = "05056881155",
-        email: String = "hugo@gmail.com",
-        password: String = "123456",
-        cep: String = "79013330",
-        street: String = "Rua Mundo da Lua",
-        income: BigDecimal = BigDecimal.valueOf(1000.0),
-        id: Long = 1L
-    ) = Customer(
-        firstName = firstName,
-        lastName = lastName,
-        cpf = cpf,
-        email = email,
-        password = password,
-        address = Address(
-            cep = cep,
-            street = street
-        ),
-        income = income,
-        id = id
-    )
+    }
 }
+
