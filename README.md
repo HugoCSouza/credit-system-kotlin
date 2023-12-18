@@ -18,6 +18,8 @@ O desenvolvimento foi seguindo as disposições das aulas, e a cada módulo, uma
 
 ## Resultado
 Os conhecimento em Kotlin foram aprimorados, assim como o conhecimento de novas ferramentas como spring boot API, Hibernate, Postman entre outras.
+Porem, os testes do CreditResource não conseguiram ser finalizados por falta de conhecimento técnico, porém o trabalho continuará a ser desenvolvido.
+
 Caso interesse ver o desafio principal, o repositório da professora Camila está neste [link](https://github.com/cami-la/credit-application-system).
 
 ### :white_check_mark: Status do Projeto
