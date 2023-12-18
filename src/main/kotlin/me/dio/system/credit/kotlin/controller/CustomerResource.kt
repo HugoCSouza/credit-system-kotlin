@@ -1,6 +1,7 @@
 package me.dio.system.credit.kotlin.controller
 
 import com.electronwill.nightconfig.core.conversion.Path
+import jakarta.validation.Valid
 import me.dio.system.credit.kotlin.dto.CustomerDto
 import me.dio.system.credit.kotlin.dto.CustomerUptadeDto
 import me.dio.system.credit.kotlin.dto.CustomerView
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -24,7 +26,7 @@ class CustomerResource(
     private val customerService: CustomerService
 ) {
     @PostMapping
-    fun saveCustomer(@RequestBody customerDTO: CustomerDto): ResponseEntity<String> {
+    fun saveCustomer(@RequestBody @Valid customerDTO: CustomerDto): ResponseEntity<String> {
         val savedCustomer = this.customerService.save(customerDTO.toEntity())
         return ResponseEntity.status(HttpStatus.CREATED)
             .body("Customer ${savedCustomer.email} saved!")
@@ -38,12 +40,13 @@ class CustomerResource(
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteCustomer(@PathVariable id: Long) = this.customerService.delete(id)
 
     @PatchMapping
     fun uptadeCustomer(
         @RequestParam(value = "customerId") id: Long,
-        @RequestBody customerUptade: CustomerUptadeDto
+        @RequestBody @Valid customerUptade: CustomerUptadeDto
     ): ResponseEntity<CustomerView> {
         val customer: Customer = this.customerService.findById(id)
         val customerUpdate: Customer = customerUptade.toEntity(customer)
