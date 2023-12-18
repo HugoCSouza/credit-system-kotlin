@@ -6,6 +6,8 @@ import me.dio.system.credit.kotlin.dto.CustomerUptadeDto
 import me.dio.system.credit.kotlin.dto.CustomerView
 import me.dio.system.credit.kotlin.entity.Customer
 import me.dio.system.credit.kotlin.service.impl.CustomerService
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -22,15 +24,17 @@ class CustomerResource(
     private val customerService: CustomerService
 ) {
     @PostMapping
-    fun saveCustomer(@RequestBody customerDTO: CustomerDto): String {
+    fun saveCustomer(@RequestBody customerDTO: CustomerDto): ResponseEntity<String> {
         val savedCustomer = this.customerService.save(customerDTO.toEntity())
-        return "Customer ${savedCustomer.email} saved!"
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body("Customer ${savedCustomer.email} saved!")
     }
 
     @GetMapping("/{id}")
-    fun findbyID(@PathVariable id: Long): CustomerView {
+    fun findbyID(@PathVariable id: Long): ResponseEntity<CustomerView> {
         val customer: Customer = this.customerService.findById(id)
-        return CustomerView(customer)
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(CustomerView(customer))
     }
 
     @DeleteMapping("/{id}")
@@ -40,11 +44,12 @@ class CustomerResource(
     fun uptadeCustomer(
         @RequestParam(value = "customerId") id: Long,
         @RequestBody customerUptade: CustomerUptadeDto
-    ): CustomerView {
+    ): ResponseEntity<CustomerView> {
         val customer: Customer = this.customerService.findById(id)
         val customerUpdate: Customer = customerUptade.toEntity(customer)
         val customerUpdated: Customer = this.customerService.save(customerUpdate)
-        return CustomerView(customerUpdated)
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(CustomerView(customerUpdated))
     }
 
 
