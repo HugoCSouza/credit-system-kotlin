@@ -1,8 +1,5 @@
 package me.dio.system.credit.kotlin.repository
 
-import io.mockk.every
-import io.mockk.just
-import io.mockk.verify
 import me.dio.system.credit.kotlin.entity.Address
 import me.dio.system.credit.kotlin.entity.Credit
 import me.dio.system.credit.kotlin.entity.Customer
@@ -35,7 +32,8 @@ class CreditRepositoryTest {
 
     @BeforeEach
     fun setup() {
-        customer = testEntityManager.persist(buildCustomer())
+        customer = testEntityManager.merge(buildCustomer())
+        customer = testEntityManager.persist(customer)
         credit1 = testEntityManager.persist(buildCredit(customer = customer))
         credit2 = testEntityManager.persist(buildCredit(customer = customer))
     }
@@ -43,13 +41,13 @@ class CreditRepositoryTest {
     @Test
     fun `should find credit by credit code`() {
         //given
-        var creditcode1 = UUID.fromString("aa547c0f-9a6a-451f-8c89-afddce916a29")
-        var creditcode2 = UUID.fromString("49f740be-46a7-449b-84e7-ff5b7986d7ef")
+        val creditcode1 = UUID.fromString("aa547c0f-9a6a-451f-8c89-afddce916a29")
+        val creditcode2 = UUID.fromString("49f740be-46a7-449b-84e7-ff5b7986d7ef")
         credit1.creditCode = creditcode1
         credit2.creditCode = creditcode2
         //when
-        var fakeCredit1: Credit = creditRepository.findByCreditCode(creditcode1)!!
-        var fakeCredit2: Credit = creditRepository.findByCreditCode(creditcode2)!!
+        val fakeCredit1: Credit = creditRepository.findByCreditCode(creditcode1)!!
+        val fakeCredit2: Credit = creditRepository.findByCreditCode(creditcode2)!!
         //then
         Assertions.assertThat(fakeCredit1).isNotNull
         Assertions.assertThat(fakeCredit2).isNotNull
